@@ -1,0 +1,674 @@
+/* grothendieckmath.com — "Black Glass, White Page", the design of the book's covers (master/covers/make_noir.py):
+   black glass and light above, white page and ink below; Apple's restraint in proportion, space and motion.
+   Faces of the GAI-MUA system only: AGB Pagella (TeX Gyre Pagella) for titles and reading, Segoe UI (else AGB Sans,
+   the renamed Selawik subset) for labels and interface. Nothing here glows but the glass and the engraving.
+   Every box on the site is black glass (.glass, below): the box standard, held by site/tools/design_gate.py. */
+@font-face { font-family: "AGB Pagella"; src: url("/static/fonts/agb-pagella-regular.woff2") format("woff2");
+             font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "AGB Pagella"; src: url("/static/fonts/agb-pagella-italic.woff2") format("woff2");
+             font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "AGB Pagella"; src: url("/static/fonts/agb-pagella-bold.woff2") format("woff2");
+             font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "AGB Cursor"; src: url("/static/fonts/agb-cursor-regular.woff2") format("woff2");
+             font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "AGB Pagella Math"; src: url("/static/fonts/agb-pagella-math.woff2") format("woff2");
+             font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "AGB Sans"; src: url("/static/fonts/agb-sans-regular.woff2") format("woff2");
+             font-weight: 400; font-display: swap; }
+@font-face { font-family: "AGB Sans"; src: url("/static/fonts/agb-sans-semibold.woff2") format("woff2");
+             font-weight: 600; font-display: swap; }
+@font-face { font-family: "AGB Sans"; src: url("/static/fonts/agb-sans-bold.woff2") format("woff2");
+             font-weight: 700; font-display: swap; }
+
+:root {
+  --black: #000; --glass: #060607; --ink: #1d1d1f; --grey: #6e6e73; --grey2: #86868b; --line: #d2d2d7;
+  --page: #fff; --mist: #f5f5f7; --light: #f5f5f7; --silver: #a1a1a6; --dim: rgba(245, 245, 247, .62);
+  /* the book's own chain for a glyph Pagella lacks: Pagella Math, then Cambria Math (master/styles/agb-fonts.tex) */
+  --serif: "AGB Pagella", "AGB Pagella Math", "Cambria Math", "TeX Gyre Pagella", "Palatino Linotype", Palatino, Georgia,
+           "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --sans: "Segoe UI", "AGB Sans", system-ui, -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  /* Chinese (/zh/) in the reader's own Chinese faces, after the GAI-MUA Latin ones (as grothendiecklab.com): no CJK
+     face is served; Latin letters and digits in a Chinese line stay in Pagella and Segoe UI */
+  --bar: 52px; --measure: 41rem;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --film: cubic-bezier(.16, 1, .3, 1);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: calc(var(--bar) + 1.2rem); }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 1.0625rem/1.6 var(--serif);
+       font-kerning: normal; font-feature-settings: "kern", "liga", "lnum"; text-rendering: optimizeLegibility;
+       -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+.skip { position: absolute; left: -999px; top: 0; }
+.skip:focus { left: 1rem; top: 1rem; z-index: 99; background: #fff; padding: .5rem .8rem; }
+.wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+.label { font: 600 .75rem/1.3 var(--sans); letter-spacing: .24em; text-transform: uppercase; }
+
+/* ---- THE BOX STANDARD: black glass. Every box of the site — the tiles, the panels of the footer, the chapter
+   pager, a note opened in place, the menu — is this one surface, and nothing else draws a box (design_gate.py):
+   a dark translucent body, deepest at the foot; the blur of what lies behind it; a hairline rim lit from above and
+   fading down the sides; an inner bevel; a soft light across the upper surface that follows the pointer; a deep
+   shadow under it. On the black it is a pane of glass over the light; on the white page, a slab of black glass. */
+.glass { --r: 28px; position: relative; isolation: isolate; overflow: hidden; border-radius: var(--r);
+         color: var(--light);
+         background: linear-gradient(180deg, rgba(32, 33, 38, .93) 0%, rgba(14, 14, 17, .96) 44%, rgba(5, 5, 7, .985) 100%);
+         -webkit-backdrop-filter: blur(26px) saturate(160%); backdrop-filter: blur(26px) saturate(160%);
+         box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(255, 255, 255, .04),
+                     inset 0 -40px 60px -40px rgba(0, 0, 0, .7), 0 1px 2px rgba(0, 0, 0, .25),
+                     0 34px 70px -34px rgba(0, 0, 0, .62); }
+.glass::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit;
+                 padding: 1px;
+                 background: linear-gradient(180deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, .09) 30%,
+                                             rgba(255, 255, 255, .03) 68%, rgba(255, 255, 255, .12));
+                 -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                 -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.glass::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+                background: radial-gradient(34rem circle at var(--mx, 22%) var(--my, -18%), rgba(255, 255, 255, .085), transparent 58%),
+                            linear-gradient(118deg, rgba(255, 255, 255, .055) 0%, rgba(255, 255, 255, 0) 32%);
+                transition: opacity .5s var(--ease); }
+.glass > * { position: relative; z-index: 1; }
+.glass .label { color: rgba(245, 245, 247, .56); }
+.glass a { color: #fff; }
+
+/* ---- the glass bar */
+.bar { position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--bar);
+       background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: saturate(180%) blur(20px);
+       backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0, 0, 0, .08);
+       transition: background .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease); }
+.bar.on-dark { background: rgba(14, 14, 16, .62); border-bottom-color: rgba(255, 255, 255, .08); color: var(--light); }
+.bar-in { height: 100%; width: min(1240px, 100% - 2.5rem); margin-inline: auto; display: flex; align-items: center;
+          gap: 2rem; }
+.brand { font: 400 1.125rem/1 var(--serif); letter-spacing: -.01em; text-decoration: none; white-space: nowrap; }
+.nav { margin-left: auto; display: flex; gap: 1.6rem; font: 400 .8125rem/1 var(--sans); letter-spacing: .01em; }
+.nav a { text-decoration: none; opacity: .8; transition: opacity .2s; }
+.nav a:hover, .nav a[aria-current] { opacity: 1; }
+/* the other language, at the end of the navigation (grothendiecklab.com's .lang): a word like the others, set apart
+   by space only — no frame (every box of the site is black glass: design_gate.py) */
+.nav .lang { margin-left: 1rem; letter-spacing: .04em; opacity: .62; }
+.nav .lang:hover { opacity: 1; }
+.menu { display: none; margin-left: auto; width: 44px; height: 44px; margin-right: -10px; padding: 0; border: 0;
+        background: none; color: inherit; cursor: pointer; position: relative; }
+.menu i { position: absolute; left: 13px; right: 13px; height: 1.5px; border-radius: 1px; background: currentColor;
+          transition: transform .35s var(--ease); }
+.menu i:first-child { top: 18px; } .menu i:last-child { top: 25px; }
+.bar.open .menu i:first-child { transform: translateY(3.5px) rotate(45deg); }
+.bar.open .menu i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+@media (max-width: 900px) {
+  .bar-in { gap: 1rem; }
+  .js .menu { display: block; }
+  .nav { display: none; }
+  .bar.open .nav.glass { --r: 22px; display: flex; flex-direction: column; gap: 0; position: fixed; margin: 0;
+                         inset: calc(var(--bar) + .6rem) .75rem auto .75rem; padding: .5rem 1.4rem;
+                         font: 400 1.0625rem/1 var(--sans); animation: sheet .45s var(--film); }
+  .bar.open .nav.glass a { padding: 1.05rem 0; opacity: .92; border-top: 1px solid rgba(255, 255, 255, .08); }
+  .bar.open .nav.glass a:first-child { border-top: 0; }
+  .bar.open .nav.glass .lang { margin: 0; letter-spacing: .01em; }
+}
+@keyframes sheet { from { opacity: 0; transform: translateY(-8px) scale(.98); } }
+
+/* ---- buttons (pills) */
+.btns { display: flex; gap: .9rem; flex-wrap: wrap; justify-content: center; }
+.btn { display: inline-flex; align-items: center; gap: .35rem; min-height: 44px; padding: 0 1.35rem;
+       border-radius: 980px; font: 400 1.0625rem/1 var(--sans); text-decoration: none; letter-spacing: -.005em;
+       transition: background .2s, color .2s, border-color .2s; }
+.btn-light { background: var(--light); color: var(--ink); }
+.btn-light:hover { background: #fff; }
+.btn-line { border: 1px solid rgba(245, 245, 247, .5); color: var(--light); }
+.btn-line:hover { border-color: var(--light); }
+.btn-ink { background: var(--ink); color: #fff; }
+.btn-ink:hover { background: #000; }
+.btn-ghost { border: 1px solid var(--line); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink); }
+.more { font: 400 1.0625rem/1 var(--sans); text-decoration: none; color: #0066cc; }
+.more::after { content: " ›"; }
+
+/* ---- the hero: black glass, the engraving, the rising sea (scenes/hero.js); sticky over a tall scroll */
+.hero { position: relative; height: 230vh; background: var(--glass); color: var(--light); }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--glass); }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0;
+                transition: opacity .6s var(--ease); }
+.stage.gl-ready canvas { opacity: 1; }
+.stage .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.js .stage.gl-ready .still { visibility: hidden; }
+.film .stage .still { opacity: 0; }
+.film.no-gl .stage .still { animation: film-fade 2.4s .3s ease forwards; }
+.hero-copy { position: absolute; inset: calc(var(--bar) + 4.5vh) 0 auto 0; text-align: center; z-index: 2;
+             padding-inline: 1.25rem; }
+.hero-copy .label { color: var(--dim); }
+.hero-copy h1 { position: relative; margin: 1.1rem 0 0; font: 400 clamp(2.9rem, 6.6vw, 6.2rem)/1.0 var(--serif);
+                letter-spacing: -.028em; color: #fff; }
+.hero-copy .sub { margin: .7rem 0 0; font: italic 400 clamp(1.35rem, 2.3vw, 2.05rem)/1.25 var(--serif);
+                  color: var(--silver); }
+.hero-copy .btns { margin-top: 1.6rem; }
+.hero-foot { position: absolute; inset: auto 0 2.4vh 0; inset-block-end: max(2.4vh, env(safe-area-inset-bottom));
+             z-index: 2; text-align: center; color: var(--dim); font: 400 .8125rem/1.4 var(--sans); letter-spacing: .02em;
+             padding-inline: 1rem; text-shadow: 0 1px 14px rgba(0, 0, 0, .9), 0 0 3px rgba(0, 0, 0, .8); }
+.hero-foot .credit { display: block; font-size: .6875rem; opacity: .7; margin-top: .3rem; }
+.hero-foot .credit > span { white-space: nowrap; }
+@media (max-width: 560px) {
+  .hero-foot .credit { font-size: .625rem; }
+  .hero-foot .credit > span { display: block; }
+  .hero-foot .credit .sep { display: none; }
+}
+@media (max-width: 760px) {
+  .hero { height: 200vh; }
+  .hero-copy { inset-block-start: calc(var(--bar) + 3.5vh); }
+  .hero-copy .btns { margin-top: 1.1rem; }
+  .btn { font-size: 1rem; min-height: 42px; padding: 0 1.1rem; }
+}
+
+/* ---- the title's entrance, a film title (boot.js sets .film before the first paint; main.js cuts the title into
+   letters when the faces are ready, then sets .go). The letters come out of the dark from the axis outwards,
+   unfocused, while the title settles as a camera does; a light then passes over them, as over the engraving, and
+   leaves them white; the subtitle rises word by word; then the buttons. Without script, or with reduced motion,
+   the words are simply there. */
+.film .hero-copy > *, .film .hero-foot { opacity: 0; }
+.film.go .hero-copy .label { animation: film-label 2.4s .1s var(--film) forwards; }
+.film.go .hero-copy .title { opacity: 1; animation: film-dolly 3.8s 0s var(--film) both; }
+.film .title .ch { color: transparent; }
+.film.go .title .ch { animation: film-letter 1.9s calc(.15s + var(--d, 0) * 1s) cubic-bezier(.3, 0, .2, 1) forwards; }
+.film .title::before, .film .title::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+                                            opacity: 0; }
+.film .title::before { color: #fff;
+  -webkit-mask: linear-gradient(100deg, #000 0 42%, transparent 58%) 100% 0 / 260% 100% no-repeat;
+  mask: linear-gradient(100deg, #000 0 42%, transparent 58%) 100% 0 / 260% 100% no-repeat; }
+.film .title::after { color: transparent;
+  background: linear-gradient(100deg, transparent 44%, rgba(255, 255, 255, .95) 50%, transparent 56%) 100% 0 / 260% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 .16em rgba(222, 230, 255, .6)); }
+.film.go .title::before { animation: film-light 1.7s 1.55s cubic-bezier(.45, 0, .2, 1) forwards; }
+.film.go .title::after { animation: film-glint 1.7s 1.55s cubic-bezier(.45, 0, .2, 1) forwards; }
+.film.go .title.done .ch { animation: none; color: #fff; }
+.film.go .title.done::before, .film.go .title.done::after { content: none; animation: none; }
+.film .hero-copy .sub .w { display: inline-block; opacity: 0; }
+.film.go .hero-copy .sub { opacity: 1; }
+.film.go .hero-copy .sub .w { animation: film-word 1.5s calc(1.2s + var(--i, 0) * .12s) var(--film) forwards; }
+.film.go .hero-copy .btns { animation: film-rise 1.5s 2.45s var(--film) forwards; }
+.film.go .hero-foot { animation: film-fade 1.8s 3s ease forwards; }
+@keyframes film-dolly { from { transform: scale(1.09) translateY(.05em); } to { transform: none; } }
+@keyframes film-letter {
+  0% { color: transparent; text-shadow: 0 0 .5em rgba(205, 210, 222, 0); }
+  30% { color: rgba(168, 170, 178, 0); text-shadow: 0 0 .3em rgba(205, 210, 222, .55); }
+  100% { color: #a9abb3; text-shadow: 0 0 0 rgba(205, 210, 222, 0); }
+}
+@keyframes film-light { 0% { opacity: 1; -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+                        100% { opacity: 1; -webkit-mask-position: 0 0; mask-position: 0 0; } }
+@keyframes film-glint { 0% { opacity: 1; background-position: 100% 0; } 82% { opacity: 1; }
+                        100% { opacity: 0; background-position: 0 0; } }
+@keyframes film-label { from { opacity: 0; letter-spacing: .46em; } to { opacity: 1; letter-spacing: .24em; } }
+@keyframes film-word { from { opacity: 0; transform: translateY(.45em); filter: blur(10px); }
+                       to { opacity: 1; transform: none; filter: none; } }
+@keyframes film-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes film-fade { to { opacity: 1; } }
+@media (max-width: 760px) {
+  .film.go .hero-copy .label { animation-name: film-fade; }
+  @keyframes film-dolly { from { transform: scale(1.06) translateY(.04em); } to { transform: none; } }
+}
+
+/* ---- sections */
+.sect { padding: clamp(5rem, 11vw, 9rem) 0; }
+.sect-dark { background: var(--glass); color: var(--light); position: relative; }
+.sect-mist { background: var(--mist); }
+.eyebrow { color: var(--grey); text-align: center; }
+.sect-dark .eyebrow { color: var(--silver); }
+.big { margin: 1.1rem auto 0; max-width: 22ch; text-wrap: balance; text-align: center; font: 400 clamp(2.2rem, 4.6vw, 3.9rem)/1.08 var(--serif);
+       letter-spacing: -.022em; }
+.lede { margin: 1.6rem auto 0; max-width: 40rem; text-wrap: pretty; text-align: center; font: 400 clamp(1.15rem, 1.6vw, 1.375rem)/1.55 var(--serif);
+        color: var(--grey); }
+.sect-dark .lede { color: var(--silver); }
+.rise { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.rise.in, .no-js .rise { opacity: 1; transform: none; }
+.tiles .rise:nth-child(2) { transition-delay: .1s; } .tiles .rise:nth-child(3) { transition-delay: .2s; }
+
+/* the glass edge between black and white: a hairline of light, as on the cover */
+.edge { position: relative; }
+.edge::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: rgba(255, 255, 255, .55);
+                box-shadow: 0 -10px 18px rgba(255, 255, 255, .05); z-index: 3; }
+.edge-under::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 10px; z-index: 3;
+                     background: linear-gradient(rgba(0, 0, 0, .10), rgba(0, 0, 0, 0)); pointer-events: none; }
+
+/* three universes: three slabs of black glass on the white page */
+.tiles { margin-top: 3.4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.tile { padding: 2.4rem 2.1rem 2.2rem; min-height: 21rem; display: flex; flex-direction: column; text-decoration: none;
+        transition: transform .6s var(--film); }
+a.tile:hover { transform: translateY(-3px); }
+.tile .go { margin-top: 1.5rem; font: 400 .9375rem/1 var(--sans); color: rgba(245, 245, 247, .62); letter-spacing: .01em; }
+.tile .go::after { content: " ›"; }
+a.tile:hover .go, a.tile:focus-visible .go { color: #fff; }
+.tile .n { font: 600 .8125rem/1 var(--sans); letter-spacing: .16em; color: rgba(245, 245, 247, .5); }
+.tile h3 { text-wrap: balance; margin: 1.5rem 0 0; font: 400 1.95rem/1.12 var(--serif); letter-spacing: -.015em; color: #fff; }
+.tile p { margin: auto 0 0; padding-top: 1.8rem; font: italic 400 1.125rem/1.5 var(--serif); color: rgba(245, 245, 247, .66); }
+@media (max-width: 900px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } }
+
+/* the book: the cover face on, standing on black glass, its reflection below */
+.book { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.book-art { position: relative; justify-self: center; width: min(400px, 76%); }
+.book-art::after { content: ""; position: absolute; left: -14%; right: -14%; top: 72.3%; height: 2px;
+                   pointer-events: none; transform: translateY(-50%);
+                   background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, .16), transparent 70%); }
+.book-art .cover { position: relative; border-radius: 3px; overflow: hidden;
+                   box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 44px 80px -36px rgba(0, 0, 0, .95); }
+.book-art .cover::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+                          background: linear-gradient(116deg, rgba(255, 255, 255, .11) 0%, rgba(255, 255, 255, 0) 30%,
+                                                      rgba(255, 255, 255, 0) 72%, rgba(255, 255, 255, .035) 100%);
+                          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 0 0 1px rgba(255, 255, 255, .04); }
+.book-art .cover img { width: 100%; }
+.book-art .cover-link { display: block; transition: transform .6s var(--film), box-shadow .6s var(--film); }
+.book-art .cover-link:hover { transform: translateY(-4px); }
+.book-art .cover-link:focus-visible { outline: 2px solid rgba(245, 245, 247, .8); outline-offset: 6px; }
+.book-art .refl { position: relative; margin-top: 2px; aspect-ratio: 720 / 388; overflow: hidden; transform: scaleY(-1);
+                  pointer-events: none; opacity: .24; filter: blur(.5px);
+                  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, .42) 18%, rgba(0, 0, 0, .1) 46%, transparent 72%);
+                  mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, .42) 18%, rgba(0, 0, 0, .1) 46%, transparent 72%); }
+.book-art .refl img { position: absolute; left: 0; bottom: 0; width: 100%; }
+.book-art { margin-bottom: -30%; }
+.eyebrow-dark { color: var(--silver); }
+.book h2 { margin: .9rem 0 0; font: 400 clamp(2.2rem, 4vw, 3.5rem)/1.06 var(--serif); letter-spacing: -.022em; color: #fff; }
+.book .sub { margin: .45rem 0 0; font: italic 400 1.5rem/1.3 var(--serif); color: var(--silver); }
+.book .blurb { margin: 1.6rem 0 0; font: 400 1.1875rem/1.6 var(--serif); color: rgba(245, 245, 247, .82); max-width: 34rem; }
+.facts { margin: 2.2rem 0 0; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 1.4rem 2.6rem; }
+.facts div { border-top: 1px solid rgba(255, 255, 255, .16); padding-top: .8rem; }
+.facts b { display: block; font: 400 2rem/1 var(--serif); color: #fff; letter-spacing: -.01em; }
+.facts span { display: block; margin-top: .35rem; font: 400 .8125rem/1.3 var(--sans); color: var(--silver); letter-spacing: .02em; }
+.book .btns { justify-content: flex-start; margin-top: 2.2rem; }
+@media (max-width: 900px) { .book { grid-template-columns: 1fr; } .book-copy { text-align: center; }
+  .book-art { width: min(340px, 72%); margin-bottom: -14%; }
+  .facts { justify-content: center; } .book .btns { justify-content: center; } .book .blurb { margin-inline: auto; } }
+
+/* twelve parts */
+.parts { margin-top: 3.6rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 2.4rem; }
+.part { border-top: 1px solid var(--line); padding: 1.35rem 0 1.6rem; text-decoration: none; display: block; }
+.part .n { font: 600 .75rem/1 var(--sans); letter-spacing: .2em; color: var(--grey2); }
+.part h3 { margin: .7rem 0 0; font: 400 1.5rem/1.15 var(--serif); letter-spacing: -.012em; }
+.part p { margin: .5rem 0 0; font: 400 .875rem/1.35 var(--sans); color: var(--grey); }
+.part:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+@media (max-width: 900px) { .parts { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .parts { grid-template-columns: 1fr; } }
+
+/* footer: black, its three statements on panes of black glass over a faint engraving of light */
+.foot { position: relative; overflow: hidden; background: var(--glass); color: var(--silver);
+        font: 400 .8125rem/1.6 var(--sans); padding: 3.6rem 0 calc(2.6rem + env(safe-area-inset-bottom)); }
+.foot::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+                background: radial-gradient(60% 80% at 50% 0%, rgba(235, 242, 255, .09), transparent 70%),
+                            repeating-linear-gradient(180deg, rgba(245, 245, 247, .07) 0 1px, transparent 1px 7px);
+                -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .5) 55%, transparent 100%);
+                mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .5) 55%, transparent 100%); }
+.foot::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: rgba(255, 255, 255, .5); }
+.foot .wrap { position: relative; }
+.foot-top { display: flex; align-items: baseline; gap: 2rem; flex-wrap: wrap; }
+.foot-top .brand { color: #fff; font-size: 1.375rem; }
+.foot-nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; }
+.foot a { color: var(--light); text-decoration: none; }
+.foot a:hover { text-decoration: underline; text-underline-offset: .2em; }
+.foot-nav a { opacity: .78; } .foot-nav a:hover { opacity: 1; text-decoration: none; }
+.panels { margin-top: 2.2rem; display: grid; grid-template-columns: 1.35fr 1.2fr 1fr; gap: 1rem; }
+.panel { --r: 22px; padding: 1.5rem 1.6rem 1.6rem; }
+.panel h2 { margin: 0; font-size: .6875rem; }
+.panel p { margin: .8rem 0 0; color: rgba(245, 245, 247, .74); font-size: .8125rem; line-height: 1.6; }
+.legal { margin: 2rem 0 0; padding-top: 1.4rem; border-top: 1px solid rgba(255, 255, 255, .1); font-size: .75rem;
+         color: var(--grey2); }
+@media (max-width: 900px) { .panels { grid-template-columns: 1fr; } .foot-nav { margin-left: 0; } }
+@media (max-width: 560px) {
+  .foot-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; width: 100%; }
+  .foot-nav a { display: flex; align-items: center; min-height: 44px; border-top: 1px solid rgba(255, 255, 255, .08);
+                font-size: .875rem; }
+}
+
+/* ---- a chapter: the head is black glass, the page is white (the cover's division) */
+.ch-head { position: relative; background: var(--glass); color: var(--light); overflow: hidden;
+           padding: calc(var(--bar) + clamp(4rem, 10vh, 7.5rem)) 0 clamp(3.2rem, 7vh, 5rem); }
+.ch-head::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+                   background: radial-gradient(70% 90% at 50% 0%, rgba(240, 246, 255, .07), transparent 65%),
+                               repeating-linear-gradient(180deg, rgba(245, 245, 247, .055) 0 1px, transparent 1px 7px);
+                   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%, #000 100%);
+                   mask-image: linear-gradient(180deg, transparent 0%, #000 45%, #000 100%); opacity: .9; }
+.ch-head .wrap { position: relative; width: min(var(--measure), 100% - 3rem); }
+.ch-head .label { color: var(--dim); }
+.ch-head .label a { text-decoration: none; }
+.ch-head .num { display: block; margin-top: 2.2rem; font: 400 1.5rem/1 var(--serif); color: var(--silver); letter-spacing: .02em; }
+.ch-head h1 { margin: .5rem 0 0; font: 400 clamp(2.8rem, 6vw, 4.6rem)/1.02 var(--serif); letter-spacing: -.026em; color: #fff; }
+.epigraph { margin: 2.6rem 0 0 auto; max-width: 30rem; }
+.epigraph blockquote { margin: 0; font: italic 400 1.1875rem/1.5 var(--serif); color: rgba(245, 245, 247, .9); }
+.epigraph .en { margin: .7rem 0 0; font: 400 1.0625rem/1.5 var(--serif); color: var(--silver); }
+.epigraph figcaption { margin-top: .9rem; font: 400 .8125rem/1.45 var(--sans); color: var(--grey2); }
+.ch-head + .edge-line { height: 1px; background: rgba(255, 255, 255, .55); }
+
+.progress { position: fixed; inset: var(--bar) 0 auto 0; height: 2px; z-index: 49; pointer-events: none; }
+.progress i { display: block; height: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
+
+.reading { display: grid; grid-template-columns: 1fr minmax(0, var(--measure)) 1fr; padding: 4.4rem 0 3rem; }
+.reading > article { grid-column: 2; padding-inline: 1.5rem; }
+.toc { display: none; }
+@media (min-width: 1240px) {
+  .reading { grid-template-columns: 1fr 15rem 3.5rem minmax(0, var(--measure)) 3rem 17rem 1fr; }
+  .reading > article { grid-column: 4; padding-inline: 0; }
+  .toc { display: block; grid-column: 2; grid-row: 1; position: sticky; top: calc(var(--bar) + 2.5rem); align-self: start;
+         max-height: calc(100vh - var(--bar) - 4rem); overflow: auto; }
+  .toc .label { color: var(--grey2); font-size: .6875rem; }
+  .toc ol { list-style: none; margin: 1rem 0 0; padding: 0; }
+  .toc li { margin: 0; }
+  .toc a { display: block; padding: .38rem 0 .38rem .9rem; border-left: 1px solid var(--line); text-decoration: none;
+           font: 400 .8125rem/1.35 var(--sans); color: var(--grey); transition: color .2s, border-color .2s; }
+  .toc a:hover { color: var(--ink); }
+  .toc a.on { color: var(--ink); border-left-color: var(--ink); }
+}
+
+article.chapter { font-size: 1.1875rem; line-height: 1.62; hyphens: auto; -webkit-hyphens: auto; }
+article.chapter p { margin: 0 0 1.05em; }
+article.chapter h2 { margin: 2.6em 0 .7em; font: 400 1.875rem/1.18 var(--serif); letter-spacing: -.016em; }
+article.chapter h2:first-child { margin-top: 0; }
+article.chapter h3 { margin: 2em 0 .6em; font: 700 1.25rem/1.3 var(--serif); }
+article.chapter em { font-style: italic; }
+code { font-family: "AGB Cursor", monospace; font-size: .92em; }
+article.chapter a { text-decoration-thickness: 1px; text-underline-offset: .15em; }
+math { font-family: "AGB Pagella Math", math; font-size: 1.04em; }
+/* a display formula wider than the measure scrolls within its own line (as a wide table does), never the page */
+math[display="block"] { display: block math; margin: 1.1em 0; padding: .2em 0; }
+.formula { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+/* an inline formula never wider than its line: on a narrow screen a long one scrolls in place */
+article.chapter math[display="inline"] { max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
+@media (max-width: 760px) { article.chapter { font-size: 1.0625rem; } article.chapter h2 { font-size: 1.5rem; } }
+
+/* notes: numbered, in the margin on wide screens, opened in place on narrow ones; all at the end without script */
+a.fn { text-decoration: none; font: 600 .62em/0 var(--sans); vertical-align: super; color: var(--grey); padding: 0 .08em; }
+a.fn:hover { color: var(--ink); }
+.sn { display: none; font: 400 .8125rem/1.5 var(--sans); color: var(--grey); hyphens: manual; -webkit-hyphens: manual; }
+.sn .sn-n { font-weight: 600; color: var(--ink); margin-right: .35em; }
+.sn em { font-style: italic; }
+.sn a, .endnotes a { overflow-wrap: anywhere; word-break: break-word; }
+.js .sn.open { display: block; margin: .7rem 0 1.1rem; padding: 1rem 1.15rem; }
+.sn.glass { --r: 16px; color: rgba(245, 245, 247, .78); }
+.sn.glass .sn-n { color: #fff; }
+@media (min-width: 1240px) {
+  .sn, .js .sn.open { display: block; float: right; clear: right; width: 17rem; margin: .2rem -20rem 1rem 0;
+                      padding: 0; background: none; position: relative; }
+  .endnotes { display: none; }
+}
+.endnotes { margin-top: 4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); font: 400 .875rem/1.55 var(--sans);
+            color: var(--grey); }
+.endnotes h2 { font: 600 .75rem/1 var(--sans) !important; letter-spacing: .2em; text-transform: uppercase; color: var(--grey2); margin: 0 0 1rem !important; }
+.endnotes ol { padding-left: 1.4rem; }
+.endnotes li { margin-bottom: .45rem; }
+
+/* figures */
+figure.fig { margin: 2.6rem 0; }
+figure.fig img { margin-inline: auto; border-radius: 6px; }
+figure.fig img.w20 { width: 20%; }
+figure.fig img.w25 { width: 25%; }
+figure.fig img.w30 { width: 30%; }
+figure.fig img.w35 { width: 35%; }
+figure.fig img.w40 { width: 40%; }
+figure.fig img.w45 { width: 45%; }
+figure.fig img.w50 { width: 50%; }
+figure.fig img.w55 { width: 55%; }
+figure.fig img.w60 { width: 60%; }
+figure.fig img.w65 { width: 65%; }
+figure.fig img.w70 { width: 70%; }
+figure.fig img.w75 { width: 75%; }
+figure.fig img.w80 { width: 80%; }
+figure.fig img.w85 { width: 85%; }
+figure.fig img.w90 { width: 90%; }
+figure.fig img.w95 { width: 95%; }
+figure.fig img.w100 { width: 100%; }
+figure.fig figcaption { margin-top: .9rem; font: 400 .875rem/1.5 var(--sans); color: var(--grey); text-align: center; }
+figure.fig figcaption b { color: var(--ink); font-weight: 600; }
+figure.fig .credit { display: block; margin-top: .25rem; font-size: .75rem; color: var(--grey2); }
+
+/* chapter end: previous / next, on black glass */
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 4.5rem; }
+.pager a.glass { --r: 22px; display: block; padding: 1.6rem 1.7rem 1.7rem; text-decoration: none;
+                 transition: transform .5s var(--film); }
+.pager a.glass:hover { transform: translateY(-2px); }
+.pager .label { font-size: .6875rem; }
+.pager b { display: block; margin-top: .6rem; font: 400 1.375rem/1.2 var(--serif); letter-spacing: -.01em; color: #fff; }
+.pager .next { text-align: right; }
+@media (max-width: 560px) { .pager { grid-template-columns: 1fr; } }
+
+/* ---- figures drawn for this edition (commutative diagrams, SVG) and rows of portraits */
+figure.fig-cd img { margin-inline: auto; max-width: 100%; height: auto; border-radius: 0; }
+figure.fig-row .row { display: flex; justify-content: center; gap: clamp(.6rem, 2vw, 1.2rem); }
+figure.fig-row .row img { width: auto; height: clamp(9rem, 26vw, 13rem); border-radius: 4px; margin: 0; }
+@media (max-width: 560px) { figure.fig-row .row img { height: auto; width: calc((100% - 1.2rem) / 3); } }
+
+/* ---- inner pages: the black-glass head (the cover's upper half), wide */
+.ch-head.wide .wrap { width: min(1120px, 100% - 3rem); }
+.ch-head.wide h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); }
+.lede-dark { margin: 1.3rem 0 0; max-width: 44rem; font: 400 clamp(1.1rem, 1.5vw, 1.3rem)/1.55 var(--serif);
+             color: rgba(245, 245, 247, .78); text-wrap: pretty; }
+.note-dark { margin: 1.1rem 0 0; font: 400 .8125rem/1.4 var(--sans); color: var(--grey2); }
+.btns-left { justify-content: flex-start; margin-top: 2rem; }
+.sect-tight { padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The Biography: the head carries the book */
+.bio-top { margin-top: 2.6rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.bio-copy .sub { margin: 0; font: italic 400 clamp(1.4rem, 2.2vw, 1.9rem)/1.25 var(--serif); color: var(--silver); }
+.bio-copy .byline { margin: .7rem 0 0; font: 400 .9375rem/1.4 var(--sans); color: rgba(245, 245, 247, .7); letter-spacing: .01em; }
+.bio-copy .facts { grid-template-columns: repeat(3, auto); }
+.bio-copy .btns { justify-content: flex-start; margin-top: 2rem; }
+.bio-art { width: min(300px, 60vw); margin-bottom: -30%; }
+@media (max-width: 900px) { .bio-top { grid-template-columns: 1fr; } .bio-art { justify-self: start; width: min(260px, 64vw); } }
+@media (max-width: 560px) { .bio-copy .facts { gap: 1.1rem 1.6rem; } }
+
+.toc-front a, .toc-part li a { display: grid; grid-template-columns: 2.6rem 1fr; align-items: baseline; gap: .4rem;
+  padding: .62rem 0; border-top: 1px solid var(--line); text-decoration: none; }
+.toc-front { margin-top: 2.4rem; }
+.toc-front .ct { font-style: italic; font-size: 1.25rem; }
+.toc-parts { margin-top: 1.6rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.6rem 3rem; }
+.toc-part { scroll-margin-top: calc(var(--bar) + 1.5rem); }
+.toc-part .label { color: var(--grey2); }
+.toc-part h2 { margin: .5rem 0 .8rem; font: 400 1.75rem/1.15 var(--serif); letter-spacing: -.014em; }
+.toc-part ol { list-style: none; margin: 0; padding: 0; }
+.cn { font: 400 .875rem/1 var(--sans); color: var(--grey2); font-variant-numeric: tabular-nums; }
+.ct { font: 400 1.125rem/1.35 var(--serif); }
+.toc-front a:hover .ct, .toc-part a:hover .ct { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+@media (max-width: 760px) { .toc-parts { grid-template-columns: 1fr; } }
+.back-t { margin-top: 4.4rem; text-align: left; }
+
+/* cards: black glass (the box standard) */
+.cards { margin-top: 3rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.1rem; }
+.cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 1.2rem; }
+.card { --r: 24px; display: flex; flex-direction: column; min-height: 14rem; padding: 1.7rem 1.6rem 1.6rem; text-decoration: none;
+        transition: transform .6s var(--film); }
+.card:hover { transform: translateY(-3px); }
+.card .label { font-size: .6875rem; }
+.card h3 { margin: 1.1rem 0 0; font: 400 1.65rem/1.15 var(--serif); letter-spacing: -.012em; color: #fff; }
+.card p { margin: 1rem 0 0; font: 400 1.0625rem/1.5 var(--serif); color: rgba(245, 245, 247, .78); }
+.card .count { margin-top: auto; padding-top: 1.4rem; font: 400 .8125rem/1.3 var(--sans); color: rgba(245, 245, 247, .55);
+               letter-spacing: .02em; }
+.card .count::after { content: " ›"; }
+.cards-3 .card { min-height: 10rem; }
+@media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .cards, .cards-3 { grid-template-columns: 1fr; } .card { min-height: 0; } }
+
+/* ---- lists: bibliography, names, writings, sources, credits */
+.list-page { padding: 3.4rem 0 5rem; }
+.list-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; justify-content: space-between; margin-bottom: 1.6rem; }
+.letters, .jump { display: flex; flex-wrap: wrap; gap: .1rem .2rem; font: 600 .8125rem/1 var(--sans); }
+.letters a { display: inline-flex; align-items: center; justify-content: center; min-width: 2rem; min-height: 2.4rem;
+             padding: 0 .45rem; text-decoration: none; color: var(--grey); }
+.jump { gap: .4rem 1.4rem; font-weight: 400; font-size: .9375rem; }
+.jump a { display: inline-flex; align-items: center; min-height: 2.4rem; text-decoration: none; color: var(--ink); }
+.letters a:hover, .jump a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .2em; }
+.search { --r: 980px; display: flex; align-items: center; width: min(20rem, 100%); min-height: 44px; padding: 0 1.1rem; }
+.search input { width: 100%; min-height: 42px; border: 0; outline: 0; background: transparent; color: #fff;
+                font: 400 1rem/1 var(--sans); -webkit-appearance: none; appearance: none; }
+.search input::placeholder { color: rgba(245, 245, 247, .55); }
+.letter-group { margin-top: 2.2rem; }
+.letter { margin: 0 0 .6rem; font: 400 2.4rem/1 var(--serif); color: var(--ink); }
+.letter-group { scroll-margin-top: calc(var(--bar) + 1rem); }
+.entries { list-style: none; margin: 0; padding: 0; }
+.entry { padding: 1rem 0 1.05rem; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--bar) + 1rem); }
+.entry:target { box-shadow: inset 3px 0 0 var(--ink); padding-left: 1rem; }
+.csl { font: 400 1.0625rem/1.55 var(--serif); overflow-wrap: anywhere; }
+.csl a { text-decoration-thickness: 1px; text-underline-offset: .15em; color: var(--ink); }
+.cites { margin: .45rem 0 0; font: 400 .8125rem/1.5 var(--sans); color: var(--grey); }
+.cites .label { font-size: .625rem; letter-spacing: .18em; color: var(--grey2); margin-right: .4rem; }
+.cites a, .chs a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.cites a:hover, .chs a:hover { border-bottom-color: var(--ink); }
+.names .entry { display: grid; grid-template-columns: minmax(12rem, 22rem) 1fr; gap: .3rem 1.6rem; padding: .7rem 0; }
+.nm { font: 400 1.0625rem/1.4 var(--serif); }
+.chs { font: 400 .875rem/1.6 var(--sans); color: var(--grey); }
+@media (max-width: 640px) { .names .entry { grid-template-columns: 1fr; } }
+.entry[hidden], .letter-group[hidden] { display: none; }
+.wgroup { margin-top: 3.2rem; scroll-margin-top: calc(var(--bar) + 1.5rem); }
+.wgroup h2 { display: flex; align-items: baseline; gap: .8rem; margin: 0 0 .9rem; font: 400 clamp(1.9rem, 3.4vw, 2.6rem)/1.1 var(--serif);
+             letter-spacing: -.018em; }
+.wgroup h2 .n { font: 400 .875rem/1 var(--sans); color: var(--grey2); letter-spacing: .02em; }
+.decade { margin: 2rem 0 .4rem; font: 600 .75rem/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--grey2); }
+.list-intro { margin: 0 0 2rem; max-width: 46rem; font: 400 1.0625rem/1.6 var(--serif); color: var(--grey); }
+.credits { list-style: none; margin: 0; padding: 0; }
+.credit-item { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.4rem; padding: 1.3rem 0; border-top: 1px solid var(--line);
+               scroll-margin-top: calc(var(--bar) + 1rem); }
+.credit-item .thumb { display: flex; align-items: flex-start; justify-content: center; }
+.credit-item .thumb img { max-height: 8rem; width: auto; border-radius: 3px; }
+.credit-item .thumb img.cd { max-width: 100%; height: auto; border-radius: 0; }
+.row-t { display: flex; gap: .3rem; }
+.row-t img { max-height: 6rem; width: auto; }
+.credit-text p { margin: .3rem 0 0; font: 400 .9375rem/1.55 var(--serif); overflow-wrap: anywhere; }
+.credit-text .label { margin: 0; font-size: .6875rem; color: var(--grey2); }
+.credit-text .label a { color: var(--ink); text-decoration: none; }
+.credit-text a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: .15em; }
+@media (max-width: 560px) { .credit-item { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1rem; } .credit-item .thumb img { max-height: 5.5rem; } }
+
+/* ---- Life: the years each chapter names, on black */
+.spec-sect { padding-top: clamp(3.5rem, 7vw, 5rem); }
+.spec-sect .eyebrow { text-align: left; margin: 0 0 1.4rem; }
+.spectra { list-style: none; margin: 0; padding: 0; }
+.spec-head, .spec-foot, .spec-row { display: grid; grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr); gap: 0 1.6rem; align-items: center; }
+.spec-head::before, .spec-foot::before { content: ""; }
+.axis { display: grid; grid-template-columns: repeat(16, 1fr); font: 400 .6875rem/1 var(--sans); color: rgba(245, 245, 247, .5);
+        font-variant-numeric: tabular-nums; }
+.axis .tick { border-left: 1px solid rgba(255, 255, 255, .14); padding: .25rem 0 .25rem .3rem; min-height: 1.4rem; white-space: nowrap; }
+.spec-part { padding: 1.5rem 0 .4rem; display: flex; gap: .9rem; align-items: baseline; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+.spec-part .label { color: rgba(245, 245, 247, .5); font-size: .625rem; }
+.spec-part b { font: 400 1.125rem/1.2 var(--serif); color: #fff; }
+.spec-row { padding: .28rem 0; border-bottom: 1px solid rgba(255, 255, 255, .045); }
+.spec-t { display: flex; gap: .6rem; align-items: baseline; text-decoration: none; min-width: 0; }
+.spec-t .cn { color: rgba(245, 245, 247, .45); width: 1.6rem; flex: none; }
+.spec-t .ct { font-size: .9375rem; color: rgba(245, 245, 247, .86); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.spec-t:hover .ct { color: #fff; text-decoration: underline; text-underline-offset: .18em; }
+.spec { display: block; width: 100%; height: 1.6rem; }
+.spec .grid { stroke: rgba(255, 255, 255, .07); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.spec .y { stroke: rgba(245, 245, 247, .92); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.spec-row:hover .spec .y { stroke: #fff; }
+@media (max-width: 760px) {
+  .spec-head, .spec-foot, .spec-row { grid-template-columns: 1fr; }
+  .spec-head::before, .spec-foot::before { display: none; }
+  .spec-row { padding: .5rem 0 .4rem; }
+  .axis .tick { font-size: .5625rem; padding-left: .15rem; }
+}
+
+/* chapters with their sections (Life, Mathematics) */
+.pgroup { margin-top: 3.6rem; }
+.pgroup .label { color: var(--grey2); }
+.pgroup > h2 { margin: .5rem 0 1.2rem; font: 400 clamp(1.8rem, 3vw, 2.3rem)/1.12 var(--serif); letter-spacing: -.016em; }
+.chbs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 3rem; }
+.chb { border-top: 1px solid var(--line); padding: 1.2rem 0 1.5rem; }
+.chb h3 { margin: 0; font: 400 1.375rem/1.25 var(--serif); letter-spacing: -.01em; }
+.chb h3 a { text-decoration: none; display: flex; gap: .7rem; align-items: baseline; }
+.chb h3 a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .18em; }
+.secs { list-style: none; margin: .7rem 0 0; padding: 0 0 0 2.2rem; }
+.secs li { margin: 0; }
+.secs a { display: block; padding: .18rem 0; font: 400 .875rem/1.4 var(--sans); color: var(--grey); text-decoration: none; }
+.secs a:hover { color: var(--ink); }
+.strip { margin: 1rem 0 0 2.2rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+.strip img { height: 4.2rem; width: auto; border-radius: 3px; }
+.strip .row-t img { max-height: 4.2rem; }
+@media (max-width: 760px) { .chbs { grid-template-columns: 1fr; } .secs, .strip { padding-left: 0; margin-left: 0; } }
+.more-p { margin-top: 3rem; }
+
+/* Mathematics: the diagrams, engraved in light on black glass */
+.diagrams { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr)); gap: 1.1rem; }
+.diagram { --r: 24px; margin: 0; display: flex; flex-direction: column; padding: 1.6rem 1.5rem 1.4rem; }
+.diagram .dg { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 9rem; padding: .6rem 0 1.2rem; }
+.diagram .dg img { max-width: 100%; height: auto; filter: invert(1) drop-shadow(0 0 6px rgba(220, 230, 255, .28)); }
+.diagram figcaption { font: 400 .9375rem/1.45 var(--serif); color: rgba(245, 245, 247, .82); }
+.diagram figcaption b { color: #fff; font-weight: 400; font-family: var(--sans); font-size: .8125rem; letter-spacing: .02em; margin-right: .2rem; }
+.chl { display: block; margin-top: .7rem; font: 400 .8125rem/1.4 var(--sans); text-decoration: none; }
+.glass .chl { color: rgba(245, 245, 247, .55); }
+.glass .chl:hover { color: #fff; }
+.chl::after { content: " ›"; }
+
+/* Writings: the epigraphs, on black glass */
+.quotes { margin-top: 3rem; columns: 2 26rem; column-gap: 1.1rem; }
+.quote { --r: 22px; break-inside: avoid; margin: 0 0 1.1rem; padding: 1.6rem 1.6rem 1.4rem; display: block; }
+.quote blockquote { margin: 0; font: italic 400 1.125rem/1.5 var(--serif); color: #fff; }
+.quote .en { margin: .7rem 0 0; font: 400 1rem/1.5 var(--serif); color: rgba(245, 245, 247, .74); }
+.quote figcaption { margin-top: .9rem; font: 400 .8125rem/1.45 var(--sans); color: rgba(245, 245, 247, .55); }
+@media (max-width: 640px) { .quotes { columns: 1; } }
+
+/* the home page: on this site */
+.sect-explore { padding-top: 0; }
+
+/* the edition: the links of the published book (release-kit/scripts/links.py) */
+#edition .big, #edition .eyebrow, #edition .lede { text-align: left; margin-left: 0; }
+#edition .lede a { color: var(--ink); }
+.dl-grid { margin-top: 2.2rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+.dl { --r: 24px; padding: 1.6rem 1.7rem 1.3rem; }
+.dl h3 { margin: .7rem 0 0; font: 400 1.25rem/1.35 var(--serif); color: #fff; }
+.dl-files { list-style: none; margin: 1.1rem 0 0; padding: 0; }
+.dl-files li { border-top: 1px solid rgba(255, 255, 255, .1); }
+.dl-files a, .dl-files .soon { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .85rem 0;
+                              text-decoration: none; min-height: 44px; }
+.dl-files .what { font: 400 1.0625rem/1.35 var(--serif); color: #fff; }
+.dl-files .fn { font: 400 .75rem/1.35 "AGB Cursor", monospace; color: rgba(245, 245, 247, .55); text-align: right;
+                overflow-wrap: anywhere; }
+.dl-files a:hover .what { text-decoration: underline; text-underline-offset: .2em; }
+.dl-files a .what::after { content: " ›"; color: rgba(245, 245, 247, .55); }
+.dl-files .soon .what { color: rgba(245, 245, 247, .62); }
+.dl-files .soon .fn { font: italic 400 .9375rem/1.35 var(--serif); color: rgba(245, 245, 247, .5); }
+@media (max-width: 760px) { .dl-grid { grid-template-columns: 1fr; } .dl-files a, .dl-files .soon { flex-direction: column; gap: .3rem; }
+                            .dl-files .fn { text-align: left; } }
+.cite { --r: 22px; margin-top: 1.1rem; padding: 1.5rem 1.6rem; }
+.cite .csl { color: rgba(245, 245, 247, .9); margin: .6rem 0 0; }
+.cite .csl a { color: #fff; }
+.cite pre { margin: 1rem 0 0; font: 400 .8125rem/1.5 "AGB Cursor", monospace; color: rgba(245, 245, 247, .78);
+            white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* the three universes: the Preface's sentence as the lede of each page */
+.lede-dark .src { font: 400 .8125rem/1 var(--sans); color: var(--grey2); text-decoration: none; white-space: nowrap; margin-left: .3rem; }
+.lede-dark .src::before { content: "— "; }
+.lede-dark .src:hover { color: var(--light); }
+.spec-sect .spec-axis { margin-top: 2.8rem; }
+.themes { margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); gap: 1.1rem;
+          align-items: start; }
+.theme { --r: 22px; padding: 1.5rem 1.6rem 1.2rem; }
+.theme h3 { margin: 0; font: 400 1.6rem/1.15 var(--serif); letter-spacing: -.01em; color: #fff; }
+.theme ul { list-style: none; margin: 1rem 0 0; padding: 0; }
+.theme li a { display: grid; grid-template-columns: 2rem 1fr; gap: .4rem; align-items: baseline; padding: .55rem 0;
+              border-top: 1px solid rgba(255, 255, 255, .09); text-decoration: none; min-height: 44px; }
+.theme .cn { color: rgba(245, 245, 247, .45); }
+.theme .tt { font: 400 1rem/1.4 var(--serif); color: rgba(245, 245, 247, .9); }
+.theme .chn { display: block; margin-top: .2rem; font: 400 .75rem/1.35 var(--sans); color: rgba(245, 245, 247, .5); }
+.theme li a:hover .tt { color: #fff; text-decoration: underline; text-underline-offset: .18em; }
+.further .more { display: inline-block; margin: 0 1.8rem .6rem 0; }
+
+/* the missing page */
+.nf { min-height: 72vh; display: flex; align-items: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+
+/* ======================================================================================== Chinese (/zh/) == */
+/* RUNBOOK D12: the series' rules for Chinese (grothendiecklab.com's lab.css L8) — a longer line, never italics for
+   Chinese, labels not tracked as capitals are; a title or a name in English beside the Chinese stays as it is */
+.l-zh { line-height: 1.8; }
+.l-zh .sub:lang(zh-Hans), .l-zh .hero-copy .sub, .l-zh .book .sub, .l-zh .bio-copy .sub { font-style: normal; letter-spacing: .04em; }
+/* Chinese labels: six characters where the English has thirty letters — set larger, so that the line still reads as a
+   line (author 2026-11-06: 中文首页的"数学思想传记"再大一些) */
+.l-zh .label, .l-zh .eyebrow, .l-zh .eyebrow-dark { font-size: .9375rem; letter-spacing: .16em; }
+.l-zh .hero-copy .label { font-size: clamp(1.25rem, 2vw, 1.875rem); letter-spacing: .36em; text-indent: .36em; }
+.l-zh .hero-copy h1 { margin-top: 1.5rem; line-height: 1.12; letter-spacing: .02em; }
+.l-zh h1, .l-zh .book h2 { word-break: keep-all; }
+.l-zh .ch-head h1 { margin-top: .5rem; }                     /* a Chinese name breaks only after its · */
+@media (max-width: 600px) { .l-zh .hero-copy h1 { font-size: 9.2vw; } }
+.l-zh .chapter p, .l-zh .lede, .l-zh .lede-dark, .l-zh .blurb { line-height: 1.9; }
+.l-zh .chapter[lang="en"] p, .l-zh [lang="en"] p { line-height: 1.6; }
+.ct-en { display: block; margin-top: .15rem; font-size: .8125em; opacity: .62; }
+.ct-orig { margin: .35rem 0 0; font: italic 400 clamp(1.05rem, 1.6vw, 1.3rem)/1.35 var(--serif); color: var(--silver); }
+.note-zh { margin-top: .8rem; font: 400 .875rem/1.6 var(--sans); }
+.note-zh a { color: inherit; }
